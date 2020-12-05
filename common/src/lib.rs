@@ -35,12 +35,20 @@ where
 	}
 }
 
-impl Add<bool> for u32 {
-	type Output = u32;
-	fn add(self, rhs: bool) -> Self::Output {
-		self + rhs as u32
-	}
+macro_rules! impl_bool_add {
+	( $( $x:ty ),* ) => {
+		$(
+			impl Add<bool> for $x {
+				type Output = $x;
+				fn add(self, rhs: bool) -> Self::Output {
+					self + rhs as $x
+				}
+			}
+		)*
+	};
 }
+
+impl_bool_add!(u32, u64, usize);
 
 pub trait DoubleSum<A, B>: Iterator<Item = (A, B)> + Sized {
 	fn double_sum<SA, SB>(self) -> (SA, SB)
