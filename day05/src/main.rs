@@ -12,12 +12,12 @@ fn s(x: &str) -> u16 {
 fn main() {
 	let mut ss: Vec<_> = read_lines("05").map(|l| s(&l)).collect();
 	ss.sort_unstable();
-	println!("{}", ss.last().unwrap());
 	let i = ss
 		.iter()
 		.zip(ss.iter().skip(1))
 		.find(|(&a, &b)| a + 1 != b)
 		.map(|(&a, _)| a + 1)
 		.unwrap();
+	println!("{}", ss.last().unwrap());
 	println!("{}", i);
 }
