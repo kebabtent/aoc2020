@@ -8,7 +8,7 @@ fn perm(k: usize) -> u32 {
 		.next()
 		.unwrap()
 		.into_iter()
-		.fold(1, |a, v| a * v)
+		.product::<u32>()
 }
 
 fn main() {
