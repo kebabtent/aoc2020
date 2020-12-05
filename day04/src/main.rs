@@ -1,4 +1,4 @@
-use common::read_all_lines;
+use common::{read_all_lines, DoubleSum};
 use itertools::Itertools;
 use lazy_static::lazy_static;
 use std::iter;
@@ -47,7 +47,8 @@ fn pc(x: String) -> (usize, usize) {
 			let (k, v) = s.next_tuple()?;
 			FS.iter().find(|(f, _)| f == &k).map(|(_, f)| f(v))
 		})
-		.fold((0, 0), |(a, b), x| (a + 1, b + x as usize))
+		.map(|x| (1, x))
+		.double_sum()
 }
 
 fn main() {
@@ -63,9 +64,7 @@ fn main() {
 			Some(v)
 		})
 		.map(|(a, b)| (a == FS.len(), b == FS.len()))
-		.fold((0, 0), |(a, b), (ax, bx)| {
-			(a + ax as usize, b + bx as usize)
-		});
+		.double_sum::<usize, usize>();
 	println!("{}", a);
 	println!("{}", b);
 }
