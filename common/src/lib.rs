@@ -1,6 +1,5 @@
 use std::fs::File;
 use std::io::{BufRead, BufReader};
-use std::ops::Add;
 use std::str::FromStr;
 
 pub fn read_all_lines(day: &str) -> impl Iterator<Item = String> {
@@ -21,19 +20,38 @@ pub fn read_lines_as<T: FromStr>(day: &str) -> impl Iterator<Item = T> {
 	try_read_lines_as(day).map(|l| l.unwrap())
 }
 
-pub trait DoubleSum<SA, SB> {
-	fn double_sum(self) -> (SA, SB);
+pub trait Add<Rhs = Self> {
+	type Output;
+	fn add(self, rhs: Rhs) -> Self::Output;
 }
 
-impl<T, A, B, SA, SB> DoubleSum<SA, SB> for T
+impl<T> Add<T> for T
 where
-	T: Iterator<Item = (A, B)>,
-	SA: Add<A, Output = SA> + Default,
-	SB: Add<B, Output = SB> + Default,
+	T: std::ops::Add<T>,
 {
-	fn double_sum(self) -> (SA, SB) {
+	type Output = T::Output;
+	fn add(self, rhs: T) -> Self::Output {
+		self + rhs
+	}
+}
+
+impl Add<bool> for u32 {
+	type Output = u32;
+	fn add(self, rhs: bool) -> Self::Output {
+		self + rhs as u32
+	}
+}
+
+pub trait DoubleSum<A, B>: Iterator<Item = (A, B)> + Sized {
+	fn double_sum<SA, SB>(self) -> (SA, SB)
+	where
+		SA: Add<A, Output = SA> + Default,
+		SB: Add<B, Output = SB> + Default,
+	{
 		self.fold((SA::default(), SB::default()), |(a, b), (c, d)| {
-			(a + c, b + d)
+			(a.add(c), b.add(d))
 		})
 	}
 }
+
+impl<T, A, B> DoubleSum<A, B> for T where T: Iterator<Item = (A, B)> {}

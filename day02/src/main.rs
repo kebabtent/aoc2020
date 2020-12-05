@@ -38,19 +38,19 @@ impl State {
 		}
 	}
 
-	fn inner(self) -> Option<(u32, u32)> {
+	fn ok(self) -> Option<(bool, bool)> {
 		match self {
-			State::Ok(a, b) => Some((a as u32, b as u32)),
+			State::Ok(a, b) => Some((a, b)),
 			_ => None,
 		}
 	}
 }
 
 fn main() {
-	let (a, b): (u32, u32) = read_lines("02")
+	let (a, b) = read_lines("02")
 		.map(|l| l.split(" ").fold(State::Def, |s, x| s.update(x)))
-		.filter_map(|s| s.inner())
-		.double_sum();
+		.filter_map(|s| s.ok())
+		.double_sum::<u32, u32>();
 	println!("{}", a);
 	println!("{}", b);
 }
