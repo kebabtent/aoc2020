@@ -1,5 +1,6 @@
 use std::fs::File;
 use std::io::{BufRead, BufReader};
+use std::ops::Add;
 use std::str::FromStr;
 
 pub fn read_all_lines(day: &str) -> impl Iterator<Item = String> {
@@ -18,4 +19,21 @@ pub fn try_read_lines_as<T: FromStr>(day: &str) -> impl Iterator<Item = Result<T
 
 pub fn read_lines_as<T: FromStr>(day: &str) -> impl Iterator<Item = T> {
 	try_read_lines_as(day).map(|l| l.unwrap())
+}
+
+pub trait DoubleSum<SA, SB> {
+	fn double_sum(self) -> (SA, SB);
+}
+
+impl<T, A, B, SA, SB> DoubleSum<SA, SB> for T
+where
+	T: Iterator<Item = (A, B)>,
+	SA: Add<A, Output = SA> + Default,
+	SB: Add<B, Output = SB> + Default,
+{
+	fn double_sum(self) -> (SA, SB) {
+		self.fold((SA::default(), SB::default()), |(a, b), (c, d)| {
+			(a + c, b + d)
+		})
+	}
 }
