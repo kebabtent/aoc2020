@@ -1,4 +1,4 @@
-use common::read_lines;
+use common::{read_lines, DoubleSum};
 use std::ops::RangeInclusive;
 
 enum State {
@@ -37,15 +37,20 @@ impl State {
 			s => s,
 		}
 	}
+
+	fn inner(self) -> Option<(u32, u32)> {
+		match self {
+			State::Ok(a, b) => Some((a as u32, b as u32)),
+			_ => None,
+		}
+	}
 }
 
 fn main() {
-	let (a, b) = read_lines("02")
+	let (a, b): (u32, u32) = read_lines("02")
 		.map(|l| l.split(" ").fold(State::Def, |s, x| s.update(x)))
-		.fold((0, 0), |(a1, a2), x| match x {
-			State::Ok(v1, v2) => (a1 + v1 as u32, a2 + v2 as u32),
-			_ => (a1, a2),
-		});
+		.filter_map(|s| s.inner())
+		.double_sum();
 	println!("{}", a);
 	println!("{}", b);
 }
