@@ -10,8 +10,7 @@ fn main() {
 				let m = x
 					.chars()
 					.filter_map(|c| c.to_digit(36))
-					.map(|c| c - 10)
-					.fold(0u32, |a, c| a | 1 << c);
+					.fold(0u64, |a, c| a | 1 << c);
 				(a | m, b & m)
 			});
 			Some((a.count_ones(), b.count_ones()))
