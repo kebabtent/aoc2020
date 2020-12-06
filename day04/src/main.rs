@@ -1,7 +1,6 @@
 use common::{read_all_lines, DoubleSum};
 use itertools::Itertools;
 use lazy_static::lazy_static;
-use std::iter;
 use std::ops::RangeInclusive;
 
 static ECL: [&'static str; 7] = ["amb", "blu", "brn", "gry", "grn", "hzl", "oth"];
@@ -53,9 +52,8 @@ fn pc(x: String) -> (usize, usize) {
 
 fn main() {
 	let (a, b) = read_all_lines("04")
-		.chain(iter::once(String::new()))
+		.peekable()
 		.batching(|it| {
-			let mut it = it.peekable();
 			it.peek()?;
 			let v = it
 				.take_while(|x| !x.is_empty())
