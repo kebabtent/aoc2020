@@ -3,8 +3,8 @@ use itertools::Itertools;
 
 fn main() {
 	let (a, b) = read_all_lines("06")
+		.peekable()
 		.batching(|it| {
-			let mut it = it.peekable();
 			it.peek()?;
 			let (a, b) = it.take_while(|l| !l.is_empty()).fold((0, !0), |(a, b), x| {
 				let m = x
