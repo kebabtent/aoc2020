@@ -50,8 +50,8 @@ macro_rules! impl_bool_add {
 
 impl_bool_add!(u32, u64, usize);
 
-pub trait DoubleSum<A, B>: Iterator<Item = (A, B)> + Sized {
-	fn double_sum<SA, SB>(self) -> (SA, SB)
+pub trait DoubletSum<A, B>: Iterator<Item = (A, B)> + Sized {
+	fn doublet_sum<SA, SB>(self) -> (SA, SB)
 	where
 		SA: Add<A, Output = SA> + Default,
 		SB: Add<B, Output = SB> + Default,
@@ -62,4 +62,4 @@ pub trait DoubleSum<A, B>: Iterator<Item = (A, B)> + Sized {
 	}
 }
 
-impl<T, A, B> DoubleSum<A, B> for T where T: Iterator<Item = (A, B)> {}
+impl<T, A, B> DoubletSum<A, B> for T where T: Iterator<Item = (A, B)> {}

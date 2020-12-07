@@ -1,4 +1,4 @@
-use common::{read_all_lines, DoubleSum};
+use common::{read_all_lines, DoubletSum};
 use itertools::Itertools;
 
 fn main() {
@@ -15,7 +15,7 @@ fn main() {
 			});
 			Some((a.count_ones(), b.count_ones()))
 		})
-		.double_sum::<u32, u32>();
+		.doublet_sum::<u32, u32>();
 	println!("{}", a);
 	println!("{}", b);
 }

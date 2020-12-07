@@ -1,4 +1,4 @@
-use common::{read_all_lines, DoubleSum};
+use common::{read_all_lines, DoubletSum};
 use itertools::Itertools;
 use lazy_static::lazy_static;
 use std::ops::RangeInclusive;
@@ -47,7 +47,7 @@ fn pc(x: String) -> (usize, usize) {
 			FS.iter().find(|(f, _)| f == &k).map(|(_, f)| f(v))
 		})
 		.map(|x| (1, x))
-		.double_sum()
+		.doublet_sum()
 }
 
 fn main() {
@@ -62,7 +62,7 @@ fn main() {
 			Some(v)
 		})
 		.map(|(a, b)| (a == FS.len(), b == FS.len()))
-		.double_sum::<usize, usize>();
+		.doublet_sum::<usize, usize>();
 	println!("{}", a);
 	println!("{}", b);
 }
