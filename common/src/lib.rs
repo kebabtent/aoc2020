@@ -3,7 +3,7 @@ use std::io::{BufRead, BufReader};
 use std::str::FromStr;
 
 pub fn read_all_lines(day: &str) -> impl Iterator<Item = String> {
-	BufReader::new(File::open(format!("day{}.txt", day)).unwrap())
+	BufReader::new(File::open(format!("input/day{}.txt", day)).unwrap())
 		.lines()
 		.map(|l| l.unwrap())
 }
