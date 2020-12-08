@@ -4,7 +4,7 @@ use std::collections::HashMap;
 
 fn ai(mi: &Vec<Vec<usize>>, i: usize, b: &mut U1024) {
 	for &j in &mi[i] {
-		*b |= U1024::one() << j;
+		b.set_bit(j, true);
 		ai(mi, j, b);
 	}
 }
