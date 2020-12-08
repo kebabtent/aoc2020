@@ -94,3 +94,43 @@ where
 		(0, None)
 	}
 }
+
+pub struct Bitmap {
+	inner: [u64; 16],
+}
+
+impl Bitmap {
+	const SIZE: usize = 64;
+
+	pub fn new() -> Self {
+		Self { inner: [0; 16] }
+	}
+
+	fn set_bit(&mut self, i: usize, f: bool) {
+		assert!(i < self.inner.len() * Self::SIZE);
+		let j = i / Self::SIZE;
+		let mask = 1 << (i % Self::SIZE);
+		if f {
+			self.inner[j] |= mask;
+		} else {
+			self.inner[j] &= !mask;
+		}
+	}
+
+	pub fn set(&mut self, i: usize) {
+		self.set_bit(i, true)
+	}
+
+	pub fn unset(&mut self, i: usize) {
+		self.set_bit(i, false)
+	}
+
+	pub fn get(&self, i: usize) -> bool {
+		assert!(i < self.inner.len() * Self::SIZE);
+		self.inner[i / Self::SIZE] & (1 << (i % Self::SIZE)) > 0
+	}
+
+	pub fn cardinality(&self) -> u32 {
+		self.inner.iter().map(|i| i.count_ones()).sum()
+	}
+}

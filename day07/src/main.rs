@@ -1,18 +1,17 @@
-use common::read_lines;
-use numext_fixed_uint::U1024;
+use common::{read_lines, Bitmap};
 use std::collections::HashMap;
 
-fn ai(mi: &Vec<Vec<usize>>, i: usize, b: &mut U1024) {
+fn ai(mi: &Vec<Vec<usize>>, i: usize, b: &mut Bitmap) {
 	for &j in &mi[i] {
-		b.set_bit(j, true);
+		b.set(j);
 		ai(mi, j, b);
 	}
 }
 
 fn a(mi: &Vec<Vec<usize>>, i: usize) -> u32 {
-	let mut b = U1024::zero();
+	let mut b = Bitmap::new();
 	ai(mi, i, &mut b);
-	b.count_ones()
+	b.cardinality()
 }
 
 fn b(m: &Vec<Vec<(usize, u32)>>, i: usize) -> u32 {

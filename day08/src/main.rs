@@ -1,5 +1,4 @@
-use common::read_lines;
-use numext_fixed_uint::U1024;
+use common::{read_lines, Bitmap};
 use std::iter;
 use O::*;
 
@@ -60,11 +59,11 @@ impl O {
 
 fn r(o: &Vec<O>) -> S {
 	let mut s = S::n();
-	let mut b = U1024::zero();
+	let mut b = Bitmap::new();
 	loop {
-		b.set_bit(s.i, true);
+		b.set(s.i);
 		s = o[s.i].a(s);
-		if b.bit(s.i).unwrap() {
+		if b.get(s.i) {
 			break;
 		}
 	}
