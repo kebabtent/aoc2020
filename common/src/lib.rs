@@ -63,3 +63,34 @@ pub trait DoubletSum<A, B>: Iterator<Item = (A, B)> + Sized {
 }
 
 impl<T, A, B> DoubletSum<A, B> for T where T: Iterator<Item = (A, B)> {}
+
+pub trait IterExt: Iterator + Sized {
+	fn batching<B, F>(self, f: F) -> Batching<Self, F>
+	where
+		F: FnMut(&mut Self) -> Option<B>,
+	{
+		Batching { f, iter: self }
+	}
+}
+
+impl<T> IterExt for T where T: Iterator {}
+
+pub struct Batching<I, F> {
+	f: F,
+	iter: I,
+}
+
+impl<B, F, I> Iterator for Batching<I, F>
+where
+	I: Iterator,
+	F: FnMut(&mut I) -> Option<B>,
+{
+	type Item = B;
+	fn next(&mut self) -> Option<B> {
+		(self.f)(&mut self.iter)
+	}
+
+	fn size_hint(&self) -> (usize, Option<usize>) {
+		(0, None)
+	}
+}

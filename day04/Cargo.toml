@@ -5,6 +5,5 @@ authors = ["kebabtent <kebabtent@gmail.com>"]
 edition = "2018"
 
 [dependencies]
-itertools = "0.9"
 lazy_static = "1.4"
 common = { path = "../common" }

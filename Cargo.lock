@@ -31,7 +31,6 @@ name = "day04"
 version = "0.1.0"
 dependencies = [
  "common",
- "itertools",
  "lazy_static",
 ]
 
@@ -47,7 +46,6 @@ name = "day06"
 version = "0.1.0"
 dependencies = [
  "common",
- "itertools",
 ]
 
 [[package]]

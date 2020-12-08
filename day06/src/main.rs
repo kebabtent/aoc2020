@@ -1,5 +1,4 @@
-use common::{read_all_lines, DoubletSum};
-use itertools::Itertools;
+use common::{read_all_lines, DoubletSum, IterExt};
 
 fn main() {
 	let (a, b) = read_all_lines("06")

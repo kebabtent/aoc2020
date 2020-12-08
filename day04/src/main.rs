@@ -1,5 +1,4 @@
-use common::{read_all_lines, DoubletSum};
-use itertools::Itertools;
+use common::{read_all_lines, DoubletSum, IterExt};
 use lazy_static::lazy_static;
 use std::ops::RangeInclusive;
 
