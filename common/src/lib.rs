@@ -1,5 +1,6 @@
 use std::fs::File;
 use std::io::{BufRead, BufReader};
+use std::ops::Not;
 use std::str::FromStr;
 
 pub fn read_all_lines(day: &str) -> impl Iterator<Item = String> {
@@ -99,21 +100,21 @@ pub struct Bitmap {
 	inner: [u64; 16],
 }
 
-impl Bitmap {
-	const SIZE: usize = 64;
+fn mask(i: usize) -> u64 {
+	1 << (i & 0x3F)
+}
 
+impl Bitmap {
 	pub fn new() -> Self {
 		Self { inner: [0; 16] }
 	}
 
 	fn set_bit(&mut self, i: usize, f: bool) {
-		assert!(i < self.inner.len() * Self::SIZE);
-		let j = i / Self::SIZE;
-		let mask = 1 << (i % Self::SIZE);
+		assert!(i < 1024);
 		if f {
-			self.inner[j] |= mask;
+			self.inner[i >> 6] |= mask(i);
 		} else {
-			self.inner[j] &= !mask;
+			self.inner[i >> 6] &= !mask(i);
 		}
 	}
 
@@ -125,12 +126,35 @@ impl Bitmap {
 		self.set_bit(i, false)
 	}
 
+	pub fn toggle(&mut self, i: usize) {
+		if self.get(i) {
+			self.unset(i)
+		} else {
+			self.set(i)
+		}
+	}
+
+	pub fn inverse(&mut self) {
+		for x in &mut self.inner {
+			*x = !*x;
+		}
+	}
+
 	pub fn get(&self, i: usize) -> bool {
-		assert!(i < self.inner.len() * Self::SIZE);
-		self.inner[i / Self::SIZE] & (1 << (i % Self::SIZE)) > 0
+		assert!(i < 1024);
+		self.inner[i >> 6] & mask(i) > 0
 	}
 
 	pub fn cardinality(&self) -> u32 {
 		self.inner.iter().map(|i| i.count_ones()).sum()
+	}
+}
+
+impl Not for Bitmap {
+	type Output = Self;
+
+	fn not(mut self) -> Self {
+		self.inverse();
+		self
 	}
 }
