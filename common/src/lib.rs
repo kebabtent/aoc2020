@@ -1,3 +1,4 @@
+use std::collections::VecDeque;
 use std::fs::File;
 use std::io::{BufRead, BufReader};
 use std::ops::Not;
@@ -71,6 +72,19 @@ pub trait IterExt: Iterator + Sized {
 		F: FnMut(&mut Self) -> Option<B>,
 	{
 		Batching { f, iter: self }
+	}
+
+	fn fold_while<S, B, F>(&mut self, mut state: S, mut f: F) -> Option<B>
+	where
+		Self: Sized,
+		F: FnMut(&mut S, Self::Item) -> Option<B>,
+	{
+		while let Some(item) = self.next() {
+			if let v @ Some(_) = f(&mut state, item) {
+				return v;
+			}
+		}
+		None
 	}
 
 	fn next_doublet(&mut self) -> Option<(Self::Item, Self::Item)> {
@@ -160,5 +174,45 @@ impl Not for Bitmap {
 	fn not(mut self) -> Self {
 		self.inverse();
 		self
+	}
+}
+
+pub struct Buffer<T> {
+	capacity: usize,
+	inner: VecDeque<T>,
+}
+
+impl<T> Buffer<T> {
+	pub fn new(capacity: usize) -> Self {
+		Self {
+			capacity,
+			inner: VecDeque::with_capacity(capacity),
+		}
+	}
+
+	pub fn capacity(&self) -> usize {
+		self.capacity
+	}
+
+	pub fn len(&self) -> usize {
+		self.inner.len()
+	}
+
+	pub fn is_full(&self) -> bool {
+		self.capacity == self.inner.len()
+	}
+
+	pub fn iter(&self) -> impl Iterator<Item = &T> {
+		self.inner.iter()
+	}
+
+	pub fn push(&mut self, value: T) -> Option<T> {
+		let res = if self.is_full() {
+			self.inner.pop_front()
+		} else {
+			None
+		};
+		self.inner.push_back(value);
+		res
 	}
 }
