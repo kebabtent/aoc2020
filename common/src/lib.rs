@@ -72,6 +72,10 @@ pub trait IterExt: Iterator + Sized {
 	{
 		Batching { f, iter: self }
 	}
+
+	fn next_doublet(&mut self) -> Option<(Self::Item, Self::Item)> {
+		Some((self.next()?, self.next()?))
+	}
 }
 
 impl<T> IterExt for T where T: Iterator {}

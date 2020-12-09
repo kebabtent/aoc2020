@@ -42,7 +42,7 @@ fn pc(x: String) -> (usize, usize) {
 	x.split(" ")
 		.filter_map(|x| {
 			let mut s = x.split(":");
-			let (k, v) = s.next_tuple()?;
+			let (k, v) = s.next_doublet()?;
 			FS.iter().find(|(f, _)| f == &k).map(|(_, f)| f(v))
 		})
 		.map(|x| (1, x))
@@ -57,7 +57,7 @@ fn main() {
 			let v = it
 				.take_while(|x| !x.is_empty())
 				.map(pc)
-				.fold((0, 0), |(a, b), (ax, bx)| (a + ax, b + bx));
+				.doublet_sum::<usize, usize>();
 			Some(v)
 		})
 		.map(|(a, b)| (a == FS.len(), b == FS.len()))
