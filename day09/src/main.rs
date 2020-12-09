@@ -40,21 +40,18 @@ impl S {
 
 fn f(b: &mut Buffer<u64>, v: u64) -> Option<u64> {
 	use itertools::Itertools;
-
-	let mut r = false;
 	if b.is_full() {
-		r = !b
+		let r = !b
 			.iter()
 			.permutations(2)
 			.map(|p| p.iter().map(|&&v| v).sum::<u64>())
 			.any(|s| s == v);
+		if r {
+			return Some(v);
+		}
 	}
 	b.push(v);
-	if r {
-		Some(v)
-	} else {
-		None
-	}
+	None
 }
 
 fn main() {
