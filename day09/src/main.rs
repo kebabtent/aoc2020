@@ -30,7 +30,7 @@ impl S {
 			}
 		}
 
-		while self.i.get(0).map(|&(a, _, _)| a).unwrap_or(0) >= self.t {
+		while self.i.get(0).map(|&(a, _, _)| a >= self.t).unwrap_or(false) {
 			self.i.pop_front();
 		}
 
