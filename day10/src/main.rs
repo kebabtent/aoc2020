@@ -11,7 +11,7 @@ fn main() {
 	let a = r
 		.iter()
 		.zip(r.iter().skip(1))
-		.map(|(&a, &b)| b - a - 1)
+		.map(|(a, b)| b - a - 1)
 		.fold(0u32, |a, x| a + (1 << 8 * x));
 	let b = r
 		.iter()
