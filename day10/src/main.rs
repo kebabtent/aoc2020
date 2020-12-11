@@ -11,7 +11,7 @@ fn main() {
 	}
 	*r.last_mut().unwrap() = 3;
 
-	let a = r.iter().map(|v| v - 1).fold(0u32, |a, x| a + (1 << 8 * x));
+	let a = r.iter().fold(0u32, |a, x| a + (1 << 8 * (x - 1)));
 	let a = (a >> 16) * (a & 0xFF);
 	let b = r
 		.iter()
