@@ -13,6 +13,7 @@ fn main() {
 		.zip(r.iter().skip(1))
 		.map(|(a, b)| b - a - 1)
 		.fold(0u32, |a, x| a + (1 << 8 * x));
+	let a = (a >> 16) * (a & 0xFF);
 	let b = r
 		.iter()
 		.zip(r.iter().skip(1))
