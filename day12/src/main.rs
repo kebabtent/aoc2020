@@ -46,11 +46,6 @@ impl Mul<i32> for P {
 	}
 }
 
-fn r(i: u32) -> P {
-	let mut p = P::n(0, 1);
-	p.r(i)
-}
-
 fn main() {
 	let (_, p, s, _) = read_lines("12").fold(
 		(1, P::z(), P::z(), P::n(10, 1)),
@@ -66,7 +61,7 @@ fn main() {
 				_ => None,
 			};
 			if let Some(m) = m {
-				let z = r(m as u32) * v;
+				let z = P::n(0, 1).r(m as u32) * v;
 				p += z;
 				if l == 'F' {
 					s += w * v;
