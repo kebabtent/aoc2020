@@ -70,14 +70,8 @@ fn main() {
 				}
 			} else {
 				let v = v / 90;
-				let r = if l == 'L' {
-					d += 4 - v;
-					4 - v
-				} else {
-					d += v;
-					v
-				};
-				d %= 4;
+				let r = if l == 'L' { 4 - v } else { v };
+				d = (d + r) % 4;
 				w.r(r as u32);
 			}
 
