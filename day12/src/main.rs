@@ -47,6 +47,7 @@ impl Mul<i32> for P {
 }
 
 fn main() {
+	let o = (0..4).map(|i| P::n(0, 1).r(i)).collect::<Vec<_>>();
 	let (_, p, s, _) = read_lines("12").fold(
 		(1, P::z(), P::z(), P::n(10, 1)),
 		|(mut d, mut p, mut s, mut w), l| {
@@ -61,7 +62,7 @@ fn main() {
 				_ => None,
 			};
 			if let Some(m) = m {
-				let z = P::n(0, 1).r(m as u32) * v;
+				let z = o[m as usize] * v;
 				p += z;
 				if l == 'F' {
 					s += w * v;
